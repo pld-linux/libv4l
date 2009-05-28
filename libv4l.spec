@@ -1,11 +1,11 @@
 Summary:	libv4l
 Name:		libv4l
-Version:	0.1
+Version:	0.5.98
 Release:	1
 License:	GPL v2
 Group:		Applications
 Source0:	http://people.atrpms.net/~hdegoede/%{name}-%{version}.tar.gz
-# Source0-md5:	3965a3bd8568e9c349e6ae89521db84d
+# Source0-md5:	9480001532d3345c0ba01051f704abe5
 URL:		http://hansdegoede.livejournal.com/3636.html
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -34,8 +34,10 @@ Header files for libv4l library.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_includedir}/%{name}
 install -d $RPM_BUILD_ROOT%{_libdir}
-install include/* $RPM_BUILD_ROOT%{_includedir}/%{name}
-install lib/lib*.so* $RPM_BUILD_ROOT%{_libdir}
+install -d $RPM_BUILD_ROOT%{_pkgconfigdir}
+install include/* $RPM_BUILD_ROOT%{_includedir}/
+install libv4l*/lib*.so* $RPM_BUILD_ROOT%{_libdir}
+install libv4l*/*.pc $RPM_BUILD_ROOT%{_pkgconfigdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -50,5 +52,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/%{name}
+%{_includedir}/%{name}*
 %{_libdir}/lib*.so
+%{_pkgconfigdir}/*.pc

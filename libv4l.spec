@@ -1,11 +1,11 @@
 Summary:	libv4l
 Name:		libv4l
-Version:	0.5.98
+Version:	0.5.99
 Release:	1
 License:	GPL v2
 Group:		Applications
 Source0:	http://people.atrpms.net/~hdegoede/%{name}-%{version}.tar.gz
-# Source0-md5:	9480001532d3345c0ba01051f704abe5
+# Source0-md5:	42577af4bd01498a94f6cfb2f6bdc58e
 URL:		http://hansdegoede.livejournal.com/3636.html
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 

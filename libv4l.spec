@@ -32,12 +32,11 @@ Header files for libv4l library.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_includedir}/%{name}
-install -d $RPM_BUILD_ROOT%{_libdir}
-install -d $RPM_BUILD_ROOT%{_pkgconfigdir}
-install include/* $RPM_BUILD_ROOT%{_includedir}/
-install libv4l*/lib*.so* $RPM_BUILD_ROOT%{_libdir}
-install libv4l*/*.pc $RPM_BUILD_ROOT%{_pkgconfigdir}
+
+%{__make} install \
+    PREFIX=%{_prefix} \
+    LIBDIR=%{_libdir} \
+    DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -49,6 +48,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc ChangeLog README TODO
 %attr(755,root,root) %{_libdir}/lib*.so.*
+%dir %{_libdir}/libv4l
+%attr(755,root,root) %{_libdir}/libv4l/v4l*.so
 
 %files devel
 %defattr(644,root,root,755)

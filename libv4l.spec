@@ -1,11 +1,11 @@
 Summary:	libv4l
 Name:		libv4l
-Version:	0.6.1
+Version:	0.6.4
 Release:	1
 License:	GPL v2
 Group:		Applications
-Source0:	http://people.atrpms.net/~hdegoede/%{name}-%{version}.tar.gz
-# Source0-md5:	0d0d96d77c98871d2e5466c10cb30a0a
+Source0:	http://people.fedoraproject.org/~jwrdegoede/%{name}-%{version}.tar.gz
+# Source0-md5:	7ef58595dc36252be7f83f69b379a715
 URL:		http://hansdegoede.livejournal.com/3636.html
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 

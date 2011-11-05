@@ -54,7 +54,7 @@ be customized and made persistent
 %package -n %{pkgname}
 Summary:	Collection of command line video4linux utilities
 License:	GPL v2+
-Group:		Applications/Console
+Group:		Applications
 
 %description -n %{pkgname}
 A series of utilities for media devices, allowing to handle the

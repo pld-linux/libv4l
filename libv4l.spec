@@ -45,7 +45,11 @@ License:	GPL v2+
 Group:		Applications/Console
 
 %description -n ir-keytable
-Dump, Load or Modify IR receiver input tables.
+Dump, Load or Modify IR receiver input tables. This package allows one
+to change the keymap of controller receivers. Those receivers are
+found as infrared receivers on DVB sticks or on framegrabber cards.
+Via ir-keytable the mapping from a scancode to the generated event can
+be customized and made persistent
 
 %package -n %{pkgname}
 Summary:	Collection of command line video4linux utilities

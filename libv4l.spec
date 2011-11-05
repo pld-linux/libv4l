@@ -1,21 +1,25 @@
-Summary:	libv4l - abstraction layer on top of video4linux2 devices
-Summary(pl.UTF-8):	libv4l - warstwa abstrakcji dla urządzeń video4linux2
+Summary:	Abstraction layer on top of video4linux2 devices
+Summary(pl.UTF-8):	Warstwa abstrakcji dla urządzeń video4linux2
 Name:		libv4l
-Version:	0.6.4
+%define	pkgname	v4l-utils
+Version:	0.8.5
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://people.fedoraproject.org/~jwrdegoede/%{name}-%{version}.tar.gz
-# Source0-md5:	7ef58595dc36252be7f83f69b379a715
-URL:		http://hansdegoede.livejournal.com/3636.html
+Source0:	http://linuxtv.org/downloads/v4l-utils/%{pkgname}-%{version}.tar.bz2
+# Source0-md5:	037bec9f68cfb0b84bcccb00d30e429b
+URL:		http://hansdegoede.livejournal.com/
+BuildRequires:	QtGui-devel
+BuildRequires:	libstdc++-devel
+BuildRequires:	sysfsutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-libv4l is a collection of libraries which adds a thin abstraction
-layer on top of video4linux2 devices. The purpose of this (thin) layer
-is to make it easy for application writers to support a wide variety
-of devices without having to write seperate code for different devices
-in the same class.
+Collection of libraries which adds a thin abstraction layer on top of
+video4linux2 devices. The purpose of this (thin) layer is to make it
+easy for application writers to support a wide variety of devices
+without having to write seperate code for different devices in the
+same class.
 
 %description -l pl.UTF-8
 libv4l to zestaw bibliotek dodający niewielką warstwę abstrakcji dla
@@ -35,8 +39,34 @@ Header files for libv4l libraries.
 %description devel -l pl.UTF-8
 Pliki nagłówkowe bibliotek libv4l.
 
+%package -n ir-keytable
+Summary:	Alter keymaps of Remote Controller devices
+License:	GPL v2+
+Group:		Applications/Console
+
+%description -n ir-keytable
+Dump, Load or Modify IR receiver input tables.
+
+%package -n %{pkgname}
+Summary:	Collection of command line video4linux utilities
+License:	GPL v2+
+Group:		Applications/Console
+
+%description -n %{pkgname}
+A series of utilities for media devices, allowing to handle the
+proprietary formats available at most webcams (libv4l), and providing
+tools to test V4L devices. 
+
+%package -n %{pkgname}-qt
+Summary:	Qt V4L2 test Utility
+License:	GPL v2+
+Group:		X11/Applications
+
+%description -n %{pkgname}-qt
+Graphical Qt v4l2 control panel.
+
 %prep
-%setup -q
+%setup -q -n %{pkgname}-%{version}
 %if "%{pld_release}" == "ac"
 %{__sed} -i 's/-fvisibility=hidden//' */Makefile
 %endif
@@ -55,33 +85,43 @@ rm -rf $RPM_BUILD_ROOT
 	LIBDIR=%{_libdir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
+install utils/rds/rds-saa6588 $RPM_BUILD_ROOT%{_bindir}
+install utils/xc3028-firmware/firmware-tool $RPM_BUILD_ROOT%{_bindir}/xc3028-firmware
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post   -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog README TODO
-%attr(755,root,root) %{_libdir}/libv4l1.so.0
-%attr(755,root,root) %{_libdir}/libv4l2.so.0
-%attr(755,root,root) %{_libdir}/libv4lconvert.so.0
-%dir %{_libdir}/libv4l
-%attr(755,root,root) %{_libdir}/libv4l/v4l1compat.so
-%attr(755,root,root) %{_libdir}/libv4l/v4l2convert.so
-%attr(755,root,root) %{_libdir}/libv4l/ov511-decomp
-%attr(755,root,root) %{_libdir}/libv4l/ov518-decomp
+%attr(755,root,root) %{_libdir}/libv4l*.so.0
+%attr(755,root,root) %{_libdir}/libv4l
 
 %files devel
 %defattr(644,root,root,755)
-%doc README.multi-threading
-%attr(755,root,root) %{_libdir}/libv4l1.so
-%attr(755,root,root) %{_libdir}/libv4l2.so
-%attr(755,root,root) %{_libdir}/libv4lconvert.so
-%{_includedir}/libv4l1.h
-%{_includedir}/libv4l2.h
-%{_includedir}/libv4lconvert.h
-%{_pkgconfigdir}/libv4l1.pc
-%{_pkgconfigdir}/libv4l2.pc
-%{_pkgconfigdir}/libv4lconvert.pc
+%doc README.lib*
+%attr(755,root,root) %{_libdir}/libv4l*.so
+%{_includedir}/libv4l*.h
+%{_pkgconfigdir}/libv4l*.pc
+
+%files -n ir-keytable
+%config(noreplace) %{_sysconfdir}/rc_*
+/lib/udev/rules.d/70-infrared.rules
+%attr(755,root,root) %{_bindir}/ir-keytable
+%{_mandir}/man1/ir-keytable.1*
+
+%files -n %{pkgname}
+%doc ChangeLog README TODO contrib
+%attr(755,root,root) %{_bindir}/*-ctl
+%attr(755,root,root) %{_bindir}/decode_tm6000
+%attr(755,root,root) %{_bindir}/rds-saa6588
+%attr(755,root,root) %{_bindir}/v4l2-*
+%attr(755,root,root) %{_bindir}/xc3028-firmware
+%attr(755,root,root) %{_sbindir}/v4l2-dbg
+
+%files -n %{pkgname}-qt
+%attr(755,root,root) %{_bindir}/qv4l2
+%{_desktopdir}/qv4l2.desktop
+%{_iconsdir}/hicolor/*/apps/qv4l2.*
